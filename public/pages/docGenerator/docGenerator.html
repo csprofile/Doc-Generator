@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="jumbotron">
+        <h1>Document Generator Beta</h1>      
+        <p>The purpose of the generator is to facilitate and standardize the deliveries of documentation related to the business area through the use of templates that will be automatically populated by the texts inserted in this tool.</p>
+    </div>
+
+    <div class="form-group" ng-show="showTemplates">
+        <label for="document-selector">Select the Document Template</label>
+        <select class="form-control" name="document-selector" ng-change="updateFields()" ng-model="documentSelect">
+            <option ng-repeat="template in docTemplates" value="{{template.template}}">{{template.name}}</option>
+        </select>
+    </div>
+    <br/>
+
+    <form ng-submit="generateDoc()" id="js_generateDoc" ng-show="show">
+        <hr/>
+
+        <spam ng-repeat="field in formFields">
+            <!-- TEXT -->
+            <div class="form-group" ng-if="field.type == 'text'">
+                <label for="{{field.name}}">{{field.description}}</label>
+                <input type="text" class="form-control" name="{{field.name}}" value="{{field.value}}">
+            </div>
+
+            <!-- TEXTAREA -->
+            <div class="form-group" ng-if="field.type == 'textarea'">
+                <label for="{{field.name}}">{{field.description}}</label>
+                <textarea rows="5" class="form-control" name="{{field.name}}" ng-if="field.type == 'textarea'">{{field.value}}</textarea>
+            </div>
+
+            <!-- SELECT -->
+            <div class="form-group" ng-if="field.type == 'select'">
+                <label for="{{field.name}}">{{field.description}}</label>
+                <select class="form-control" name="{{field.name}}">
+                    <option ng-repeat="option in field.options" value="{{option.value}}">{{option.text}}</option>
+                </select>
+            </div>
+
+            <!-- HIDDEN -->
+            <input type="hidden" name="{{field.name}}" value="{{field.value}}" ng-if="field.type == 'hidden'"/><br/>
+
+            <!-- CHECKBOX -->
+            <spam ng-if="field.type == 'checkbox'">
+                <p>{{field.description}}</p>
+                <div class="checkbox" ng-repeat="checkboxOption in field.options">
+                    <label><input type="checkbox" name="{{field.name}}" value="{{checkboxOption.value}}"> {{checkboxOption.text}}</label>
+                </div>
+
+            </spam>
+        </spam>
+
+
+        <input type="submit" class="btn btn-default" name="form_submit" value="Download Document" />
+    </form>
+    <br/>
+</div>
